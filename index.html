@@ -432,27 +432,30 @@
       tglCoFull: formatTglIndo(tglCheckout)
     });
 
-    var container = document.createElement('div');
-    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;pointer-events:none;z-index:-9999;opacity:0.01;';
-    container.innerHTML = invoiceHTML;
-    document.body.appendChild(container);
+    var iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:0;top:0;width:794px;height:1123px;border:none;opacity:0;pointer-events:none;z-index:-9999;';
+    document.body.appendChild(iframe);
+    var iDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iDoc.open();
+    iDoc.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box;}</style></head><body>' + invoiceHTML + '</body></html>');
+    iDoc.close();
 
-    var el = container.firstChild;
+    var el = iDoc.body.firstChild;
     var fileName = 'Invoice_' + nama.replace(/\s+/g, '_') + '_' + tglCheckin + '.pdf';
 
     html2pdf().set({
       margin: 0,
       filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, windowWidth: 794, scrollX: 0, scrollY: 0 },
+      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123 },
       jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
     }).from(el).save().then(function() {
-      document.body.removeChild(container);
+      document.body.removeChild(iframe);
       btn.disabled = false;
       btn.innerHTML = '📄 Download Invoice PDF';
       showToast('✅ Invoice berhasil di-download!');
     }).catch(function() {
-      if (container.parentNode) document.body.removeChild(container);
+      if (iframe.parentNode) document.body.removeChild(iframe);
       btn.disabled = false;
       btn.innerHTML = '📄 Download Invoice PDF';
       showToast('❌ Gagal membuat PDF');
