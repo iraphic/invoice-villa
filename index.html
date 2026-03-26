@@ -138,16 +138,17 @@
     position: absolute;
     left: -9999px;
     top: 0;
-    width: 210mm;
+    width: 794px;
     background: white;
   }
   .invoice {
-    width: 210mm;
-    min-height: 297mm;
+    width: 794px;
+    height: 1123px;
     padding: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
     color: #333;
     position: relative;
+    overflow: hidden;
   }
   .inv-header {
     background: var(--primary);
@@ -624,8 +625,8 @@
       margin: 0,
       filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, width: 794, windowWidth: 794 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, windowWidth: 794 },
+      jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
     };
 
     html2pdf().set(opt).from(element).save().then(() => {
