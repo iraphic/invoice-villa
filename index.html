@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f75d5d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Invoice Villa">
+<title>Blissful Villa - Invoice Generator</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  :root {
+    --primary: #f75d5d;
+    --primary-light: #fcd4d4;
+    --bg: #f5f5f5;
+    --card: #ffffff;
+    --text: #333333;
+    --text-light: #777777;
+    --accent: #d4ecf7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .app-header {
+    background: var(--primary);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .app-header h1 { font-size: 1.3rem; font-weight: 700; }
+  .app-header p { font-size: 0.8rem; opacity: 0.9; margin-top: 2px; }
+  .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+  .form-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .form-card h2 {
+    font-size: 0.95rem;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 5px;
+  }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    background: white;
+    color: var(--text);
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .row { display: flex; gap: 12px; }
+  .row .form-group { flex: 1; }
+  .dp-section { display: none; }
+  .dp-section.active { display: block; }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    margin-top: 10px;
+  }
+  .btn-group { margin-top: 8px; }
+  .summary-box {
+    background: var(--primary-light);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.9rem;
+  }
+  .summary-row.total {
+    font-weight: 700;
+    font-size: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 8px;
+    margin-top: 4px;
+    color: var(--primary);
+  }
+
+  /* Invoice Template (for PDF) */
+  .invoice-wrap {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 210mm;
+    background: white;
+  }
+  .invoice {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #333;
+    position: relative;
+  }
+  .inv-header {
+    background: var(--primary);
+    text-align: center;
+    padding: 28px 20px 18px;
+  }
+  .inv-header h1 {
+    font-family: 'Georgia', serif;
+    font-size: 38px;
+    color: white;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 2px;
+  }
+  .inv-header h1 span {
+    display: inline-block;
+    position: relative;
+  }
+  .inv-subheader {
+    background: var(--primary-light);
+    text-align: center;
+    padding: 12px 20px;
+    letter-spacing: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+  }
+  .inv-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 40px 18px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .inv-info .left { }
+  .inv-info .right { text-align: right; }
+  .inv-table {
+    width: calc(100% - 80px);
+    margin: 10px 40px;
+    border-collapse: collapse;
+  }
+  .inv-table thead th {
+    background: var(--primary-light);
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 1.5px solid #ccc;
+  }
+  .inv-table thead th:last-child,
+  .inv-table thead th:nth-child(3) { text-align: center; }
+  .inv-table thead th:last-child { text-align: right; }
+  .inv-table tbody td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .inv-table tbody td:nth-child(3) { text-align: center; }
+  .inv-table tbody td:last-child { text-align: right; }
+  .inv-dp-row td {
+    padding: 16px 14px !important;
+    border-bottom: none !important;
+  }
+  .inv-checkin {
+    padding: 8px 40px;
+    font-size: 13.5px;
+    font-style: italic;
+    border-top: 1px solid #999;
+    margin-top: 4px;
+  }
+  .inv-summary {
+    width: 280px;
+    margin: 30px 40px 0 auto;
+    font-size: 14px;
+  }
+  .inv-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+  }
+  .inv-summary-row.sisa {
+    background: var(--accent);
+    font-weight: 700;
+    font-style: italic;
+    padding: 8px 10px;
+    margin-top: 2px;
+  }
+  .inv-footer {
+    background: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 24px 40px;
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    line-height: 1.6;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .container { padding: 12px; }
+    .form-card { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>🏠 Blissful Villa</h1>
+  <p>Invoice Generator</p>
+</div>
+
+<div class="container">
+  <!-- Customer Info -->
+  <div class="form-card">
+    <h2>👤 Data Customer</h2>
+    <div class="form-group">
+      <label>Nama Customer</label>
+      <input type="text" id="namaCustomer" placeholder="Contoh: Kak Frinka">
+    </div>
+    <div class="form-group">
+      <label>Lokasi Customer</label>
+      <input type="text" id="lokasiCustomer" placeholder="Contoh: Surabaya">
+    </div>
+  </div>
+
+  <!-- Villa Info -->
+  <div class="form-card">
+    <h2>🏡 Detail Sewa Villa</h2>
+    <div class="form-group">
+      <label>Harga Sewa Villa (per malam)</label>
+      <input type="text" id="hargaSewa" inputmode="numeric" placeholder="Contoh: 1250000">
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label>Tanggal Check In</label>
+        <input type="date" id="tglCheckin">
+      </div>
+      <div class="form-group">
+        <label>Tanggal Check Out</label>
+        <input type="date" id="tglCheckout">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Jumlah Malam</label>
+      <input type="text" id="jmlMalam" readonly placeholder="Otomatis">
+    </div>
+  </div>
+
+  <!-- Payment Info -->
+  <div class="form-card">
+    <h2>💳 Pembayaran</h2>
+    <div class="form-group">
+      <label>Tanggal Pembayaran</label>
+      <input type="date" id="tglBayar">
+    </div>
+    <div class="form-group">
+      <label>Jenis Pembayaran</label>
+      <select id="jenisBayar">
+        <option value="dp">DP (Down Payment)</option>
+        <option value="full">Full Payment</option>
+      </select>
+    </div>
+    <div class="dp-section" id="dpSection">
+      <div class="form-group">
+        <label>Besaran DP (%)</label>
+        <input type="number" id="besaranDp" min="1" max="99" value="30" placeholder="30">
+      </div>
+    </div>
+
+    <!-- Live Summary -->
+    <div class="summary-box" id="summaryBox">
+      <div class="summary-row">
+        <span>Total Sewa</span>
+        <span id="sumTotal">Rp0</span>
+      </div>
+      <div class="summary-row" id="sumDpRow">
+        <span id="sumDpLabel">DP (30%)</span>
+        <span id="sumDp">Rp0</span>
+      </div>
+      <div class="summary-row total" id="sumSisaRow">
+        <span>Sisa Pembayaran</span>
+        <span id="sumSisa">Rp0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="btn-group">
+    <button class="btn btn-primary" id="btnGenerate" onclick="generatePDF()">
+      📄 Download Invoice PDF
+    </button>
+    <button class="btn btn-outline" onclick="resetForm()">
+      🔄 Reset Form
+    </button>
+  </div>
+
+  <div style="height: 30px;"></div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Invoice Template for PDF -->
+<div class="invoice-wrap" id="invoiceWrap">
+  <div class="invoice" id="invoiceTemplate">
+    <div class="inv-header">
+      <h1><i>Blissful Villa</i> 🏠</h1>
+    </div>
+    <div class="inv-subheader">I N V O I C E</div>
+    <div class="inv-info">
+      <div class="left">
+        Kepada Yth:<br>
+        <span id="invNama"></span><br>
+        di <span id="invLokasi"></span>
+      </div>
+      <div class="right">
+        Telah terima pembayaran ☐<br>
+        <span id="invJenisBayarLabel"></span> pada<br>
+        <span id="invTglBayar"></span>
+      </div>
+    </div>
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Keterangan</th>
+          <th style="width:20%">Harga</th>
+          <th style="width:15%">Jml hari</th>
+          <th style="width:25%">Total</th>
+        </tr>
+      </thead>
+      <tbody id="invTableBody">
+      </tbody>
+    </table>
+    <div class="inv-checkin" id="invCheckin"></div>
+    <div class="inv-summary" id="invSummary"></div>
+    <div class="inv-footer">
+      Terima kasih dan selamat berlibur bersama<br>
+      keluarga tercinta di Kota Wisata Batu
+    </div>
+  </div>
+</div>
+
+<script>
+  // Format currency
+  function formatRp(num) {
+    return 'Rp' + Number(num).toLocaleString('id-ID');
+  }
+
+  // Format number input with thousand separator
+  function formatNumberInput(input) {
+    let val = input.value.replace(/\D/g, '');
+    input.value = val ? Number(val).toLocaleString('id-ID') : '';
+  }
+
+  // Parse formatted number
+  function parseNumber(str) {
+    return Number(String(str).replace(/\D/g, '')) || 0;
+  }
+
+  // Format date to Indonesian
+  const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const bulanNama = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+  function formatTglIndo(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr + 'T00:00:00');
+    return hariNama[d.getDay()] + ', ' + d.getDate().toString().padStart(2,'0') + ' ' + bulanNama[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function formatTglShort(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.getDate().toString().padStart(2,'0') + ' ' + bulanNama[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  // Calculate nights
+  function calcNights() {
+    const ci = document.getElementById('tglCheckin').value;
+    const co = document.getElementById('tglCheckout').value;
+    if (ci && co) {
+      const d1 = new Date(ci);
+      const d2 = new Date(co);
+      const diff = Math.max(0, Math.round((d2 - d1) / (1000*60*60*24)));
+      document.getElementById('jmlMalam').value = diff > 0 ? diff : '';
+      return diff;
+    }
+    document.getElementById('jmlMalam').value = '';
+    return 0;
+  }
+
+  // Update summary
+  function updateSummary() {
+    const harga = parseNumber(document.getElementById('hargaSewa').value);
+    const nights = calcNights();
+    const total = harga * (nights || 1);
+    const jenis = document.getElementById('jenisBayar').value;
+    const dpPct = Number(document.getElementById('besaranDp').value) || 0;
+
+    document.getElementById('sumTotal').textContent = formatRp(total);
+
+    if (jenis === 'full') {
+      document.getElementById('sumDpRow').style.display = 'none';
+      document.getElementById('sumSisaRow').style.display = 'none';
+    } else {
+      document.getElementById('sumDpRow').style.display = '';
+      document.getElementById('sumSisaRow').style.display = '';
+      const dpAmount = Math.round(total * dpPct / 100);
+      const sisa = total - dpAmount;
+      document.getElementById('sumDpLabel').textContent = 'DP (' + dpPct + '%)';
+      document.getElementById('sumDp').textContent = formatRp(dpAmount);
+      document.getElementById('sumSisa').textContent = formatRp(sisa);
+    }
+  }
+
+  // Toggle DP section
+  document.getElementById('jenisBayar').addEventListener('change', function() {
+    const dpSec = document.getElementById('dpSection');
+    if (this.value === 'dp') {
+      dpSec.classList.add('active');
+    } else {
+      dpSec.classList.remove('active');
+    }
+    updateSummary();
+  });
+
+  // Initialize DP section visible
+  document.getElementById('dpSection').classList.add('active');
+
+  // Harga sewa formatting
+  document.getElementById('hargaSewa').addEventListener('input', function() {
+    formatNumberInput(this);
+    updateSummary();
+  });
+
+  // Date changes
+  document.getElementById('tglCheckin').addEventListener('change', updateSummary);
+  document.getElementById('tglCheckout').addEventListener('change', updateSummary);
+  document.getElementById('besaranDp').addEventListener('input', updateSummary);
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // Validate
+  function validate() {
+    const fields = [
+      { id: 'namaCustomer', label: 'Nama Customer' },
+      { id: 'lokasiCustomer', label: 'Lokasi Customer' },
+      { id: 'hargaSewa', label: 'Harga Sewa' },
+      { id: 'tglCheckin', label: 'Tanggal Check In' },
+      { id: 'tglCheckout', label: 'Tanggal Check Out' },
+      { id: 'tglBayar', label: 'Tanggal Pembayaran' },
+    ];
+    for (const f of fields) {
+      if (!document.getElementById(f.id).value.trim()) {
+        showToast('Mohon isi ' + f.label);
+        document.getElementById(f.id).focus();
+        return false;
+      }
+    }
+    const ci = new Date(document.getElementById('tglCheckin').value);
+    const co = new Date(document.getElementById('tglCheckout').value);
+    if (co <= ci) {
+      showToast('Tanggal Check Out harus setelah Check In');
+      return false;
+    }
+    return true;
+  }
+
+  // Generate PDF
+  function generatePDF() {
+    if (!validate()) return;
+
+    const btn = document.getElementById('btnGenerate');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Membuat PDF...';
+
+    const nama = document.getElementById('namaCustomer').value.trim();
+    const lokasi = document.getElementById('lokasiCustomer').value.trim();
+    const harga = parseNumber(document.getElementById('hargaSewa').value);
+    const tglCheckin = document.getElementById('tglCheckin').value;
+    const tglCheckout = document.getElementById('tglCheckout').value;
+    const tglBayar = document.getElementById('tglBayar').value;
+    const jenis = document.getElementById('jenisBayar').value;
+    const dpPct = Number(document.getElementById('besaranDp').value) || 0;
+    const nights = calcNights();
+    const total = harga * nights;
+    const dpAmount = jenis === 'dp' ? Math.round(total * dpPct / 100) : total;
+    const sisa = total - dpAmount;
+
+    // Populate invoice
+    document.getElementById('invNama').textContent = nama;
+    document.getElementById('invLokasi').textContent = lokasi;
+    document.getElementById('invTglBayar').textContent = formatTglIndo(tglBayar);
+
+    if (jenis === 'dp') {
+      document.getElementById('invJenisBayarLabel').textContent = 'DP Booking Villa';
+    } else {
+      document.getElementById('invJenisBayarLabel').textContent = 'Full Payment Booking Villa';
+    }
+
+    // Table body
+    let tbody = '';
+    tbody += '<tr>';
+    tbody += '<td>Sewa Tgl ' + formatTglShort(tglCheckin) + '</td>';
+    tbody += '<td>' + formatRp(harga) + '</td>';
+    tbody += '<td>' + nights + '</td>';
+    tbody += '<td>' + formatRp(total) + '</td>';
+    tbody += '</tr>';
+
+    if (jenis === 'dp') {
+      tbody += '<tr class="inv-dp-row">';
+      tbody += '<td colspan="3">Pembayaran DP ' + dpPct + '%</td>';
+      tbody += '<td>' + formatRp(dpAmount) + '</td>';
+      tbody += '</tr>';
+    }
+
+    document.getElementById('invTableBody').innerHTML = tbody;
+
+    // Checkin/out line
+    document.getElementById('invCheckin').innerHTML =
+      '<i>Check in <b>' + formatTglIndo(tglCheckin) + '</b> - Check out <b>' + formatTglIndo(tglCheckout) + '</b></i>';
+
+    // Summary
+    let summary = '';
+    if (jenis === 'dp') {
+      summary += '<div class="inv-summary-row"><span><b>Total</b></span><span>' + formatRp(total) + '</span></div>';
+      summary += '<div class="inv-summary-row"><span><b>DP</b></span><span>' + formatRp(dpAmount) + '</span></div>';
+      summary += '<div class="inv-summary-row sisa"><span>Sisa Pembayaran</span><span>' + formatRp(sisa) + '</span></div>';
+    } else {
+      summary += '<div class="inv-summary-row sisa"><span>Total Pembayaran</span><span>' + formatRp(total) + '</span></div>';
+    }
+    document.getElementById('invSummary').innerHTML = summary;
+
+    // Make visible temporarily
+    const wrap = document.getElementById('invoiceWrap');
+    wrap.style.left = '0';
+    wrap.style.position = 'fixed';
+    wrap.style.top = '0';
+    wrap.style.zIndex = '-1';
+    wrap.style.opacity = '0';
+
+    const element = document.getElementById('invoiceTemplate');
+    const fileName = 'Invoice_' + nama.replace(/\s+/g, '_') + '_' + tglCheckin + '.pdf';
+
+    const opt = {
+      margin: 0,
+      filename: fileName,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, width: 794, windowWidth: 794 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      wrap.style.left = '-9999px';
+      wrap.style.position = 'absolute';
+      wrap.style.opacity = '';
+      wrap.style.zIndex = '';
+      btn.disabled = false;
+      btn.innerHTML = '📄 Download Invoice PDF';
+      showToast('✅ Invoice berhasil di-download!');
+    }).catch(() => {
+      wrap.style.left = '-9999px';
+      wrap.style.position = 'absolute';
+      wrap.style.opacity = '';
+      wrap.style.zIndex = '';
+      btn.disabled = false;
+      btn.innerHTML = '📄 Download Invoice PDF';
+      showToast('❌ Gagal membuat PDF');
+    });
+  }
+
+  // Reset
+  function resetForm() {
+    document.getElementById('namaCustomer').value = '';
+    document.getElementById('lokasiCustomer').value = '';
+    document.getElementById('hargaSewa').value = '';
+    document.getElementById('tglCheckin').value = '';
+    document.getElementById('tglCheckout').value = '';
+    document.getElementById('tglBayar').value = '';
+    document.getElementById('jenisBayar').value = 'dp';
+    document.getElementById('besaranDp').value = '30';
+    document.getElementById('jmlMalam').value = '';
+    document.getElementById('dpSection').classList.add('active');
+    updateSummary();
+    showToast('Form berhasil direset');
+  }
+
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  // Initial summary
+  updateSummary();
+</script>
+</body>
+</html>
