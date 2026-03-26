@@ -97,14 +97,8 @@
     gap: 8px;
   }
   .btn:active { transform: scale(0.98); }
-  .btn-primary {
-    background: var(--primary);
-    color: white;
-  }
-  .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-outline {
     background: white;
     color: var(--primary);
@@ -132,127 +126,6 @@
     margin-top: 4px;
     color: var(--primary);
   }
-
-  /* Invoice Template (for PDF) */
-  .invoice-wrap {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    width: 794px;
-    background: white;
-  }
-  .invoice {
-    width: 794px;
-    height: 1123px;
-    padding: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    color: #333;
-    position: relative;
-    overflow: hidden;
-  }
-  .inv-header {
-    background: var(--primary);
-    text-align: center;
-    padding: 28px 20px 18px;
-  }
-  .inv-header h1 {
-    font-family: 'Georgia', serif;
-    font-size: 38px;
-    color: white;
-    font-weight: 700;
-    font-style: italic;
-    letter-spacing: 2px;
-  }
-  .inv-header h1 span {
-    display: inline-block;
-    position: relative;
-  }
-  .inv-subheader {
-    background: var(--primary-light);
-    text-align: center;
-    padding: 12px 20px;
-    letter-spacing: 14px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #333;
-  }
-  .inv-info {
-    display: flex;
-    justify-content: space-between;
-    padding: 24px 40px 18px;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .inv-info .left { }
-  .inv-info .right { text-align: right; }
-  .inv-table {
-    width: calc(100% - 80px);
-    margin: 10px 40px;
-    border-collapse: collapse;
-  }
-  .inv-table thead th {
-    background: var(--primary-light);
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: left;
-    border-bottom: 1.5px solid #ccc;
-  }
-  .inv-table thead th:last-child,
-  .inv-table thead th:nth-child(3) { text-align: center; }
-  .inv-table thead th:last-child { text-align: right; }
-  .inv-table tbody td {
-    padding: 12px 14px;
-    font-size: 13.5px;
-    border-bottom: 1px solid #eee;
-    vertical-align: top;
-  }
-  .inv-table tbody td:nth-child(3) { text-align: center; }
-  .inv-table tbody td:last-child { text-align: right; }
-  .inv-dp-row td {
-    padding: 16px 14px !important;
-    border-bottom: none !important;
-  }
-  .inv-checkin {
-    padding: 8px 40px;
-    font-size: 13.5px;
-    font-style: italic;
-    border-top: 1px solid #999;
-    margin-top: 4px;
-  }
-  .inv-summary {
-    width: 280px;
-    margin: 30px 40px 0 auto;
-    font-size: 14px;
-  }
-  .inv-summary-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 10px;
-  }
-  .inv-summary-row.sisa {
-    background: var(--accent);
-    font-weight: 700;
-    font-style: italic;
-    padding: 8px 10px;
-    margin-top: 2px;
-  }
-  .inv-footer {
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 24px 40px;
-    font-size: 18px;
-    font-weight: 700;
-    font-style: italic;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    line-height: 1.6;
-  }
-
-  /* Toast */
   .toast {
     position: fixed;
     bottom: 80px;
@@ -269,7 +142,6 @@
     pointer-events: none;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
   @media (max-width: 480px) {
     .container { padding: 12px; }
     .form-card { padding: 16px; }
@@ -284,7 +156,6 @@
 </div>
 
 <div class="container">
-  <!-- Customer Info -->
   <div class="form-card">
     <h2>👤 Data Customer</h2>
     <div class="form-group">
@@ -297,12 +168,11 @@
     </div>
   </div>
 
-  <!-- Villa Info -->
   <div class="form-card">
     <h2>🏡 Detail Sewa Villa</h2>
     <div class="form-group">
       <label>Harga Sewa Villa (per malam)</label>
-      <input type="text" id="hargaSewa" inputmode="numeric" placeholder="Contoh: 1250000">
+      <input type="text" id="hargaSewa" inputmode="numeric" placeholder="Contoh: 1.100.000">
     </div>
     <div class="row">
       <div class="form-group">
@@ -320,7 +190,6 @@
     </div>
   </div>
 
-  <!-- Payment Info -->
   <div class="form-card">
     <h2>💳 Pembayaran</h2>
     <div class="form-group">
@@ -334,15 +203,13 @@
         <option value="full">Full Payment</option>
       </select>
     </div>
-    <div class="dp-section" id="dpSection">
+    <div class="dp-section active" id="dpSection">
       <div class="form-group">
         <label>Besaran DP (%)</label>
         <input type="number" id="besaranDp" min="1" max="99" value="30" placeholder="30">
       </div>
     </div>
-
-    <!-- Live Summary -->
-    <div class="summary-box" id="summaryBox">
+    <div class="summary-box">
       <div class="summary-row">
         <span>Total Sewa</span>
         <span id="sumTotal">Rp0</span>
@@ -358,7 +225,6 @@
     </div>
   </div>
 
-  <!-- Actions -->
   <div class="btn-group">
     <button class="btn btn-primary" id="btnGenerate" onclick="generatePDF()">
       📄 Download Invoice PDF
@@ -367,94 +233,50 @@
       🔄 Reset Form
     </button>
   </div>
-
   <div style="height: 30px;"></div>
 </div>
 
-<!-- Toast Notification -->
 <div class="toast" id="toast"></div>
 
-<!-- Invoice Template for PDF -->
-<div class="invoice-wrap" id="invoiceWrap">
-  <div class="invoice" id="invoiceTemplate">
-    <div class="inv-header">
-      <h1><i>Blissful Villa</i> 🏠</h1>
-    </div>
-    <div class="inv-subheader">I N V O I C E</div>
-    <div class="inv-info">
-      <div class="left">
-        Kepada Yth:<br>
-        <span id="invNama"></span><br>
-        di <span id="invLokasi"></span>
-      </div>
-      <div class="right">
-        Telah terima pembayaran ☐<br>
-        <span id="invJenisBayarLabel"></span> pada<br>
-        <span id="invTglBayar"></span>
-      </div>
-    </div>
-    <table class="inv-table">
-      <thead>
-        <tr>
-          <th style="width:40%">Keterangan</th>
-          <th style="width:20%">Harga</th>
-          <th style="width:15%">Jml hari</th>
-          <th style="width:25%">Total</th>
-        </tr>
-      </thead>
-      <tbody id="invTableBody">
-      </tbody>
-    </table>
-    <div class="inv-checkin" id="invCheckin"></div>
-    <div class="inv-summary" id="invSummary"></div>
-    <div class="inv-footer">
-      Terima kasih dan selamat berlibur bersama<br>
-      keluarga tercinta di Kota Wisata Batu
-    </div>
-  </div>
-</div>
-
 <script>
-  // Format currency
   function formatRp(num) {
     return 'Rp' + Number(num).toLocaleString('id-ID');
   }
 
-  // Format number input with thousand separator
   function formatNumberInput(input) {
-    let val = input.value.replace(/\D/g, '');
+    var val = input.value.replace(/\D/g, '');
     input.value = val ? Number(val).toLocaleString('id-ID') : '';
   }
 
-  // Parse formatted number
   function parseNumber(str) {
     return Number(String(str).replace(/\D/g, '')) || 0;
   }
 
-  // Format date to Indonesian
-  const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const bulanNama = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var bulanNama = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
   function formatTglIndo(dateStr) {
     if (!dateStr) return '-';
-    const d = new Date(dateStr + 'T00:00:00');
+    var d = new Date(dateStr + 'T00:00:00');
     return hariNama[d.getDay()] + ', ' + d.getDate().toString().padStart(2,'0') + ' ' + bulanNama[d.getMonth()] + ' ' + d.getFullYear();
   }
 
   function formatTglShort(dateStr) {
     if (!dateStr) return '-';
-    const d = new Date(dateStr + 'T00:00:00');
+    var d = new Date(dateStr + 'T00:00:00');
     return d.getDate().toString().padStart(2,'0') + ' ' + bulanNama[d.getMonth()] + ' ' + d.getFullYear();
   }
 
-  // Calculate nights
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
   function calcNights() {
-    const ci = document.getElementById('tglCheckin').value;
-    const co = document.getElementById('tglCheckout').value;
+    var ci = document.getElementById('tglCheckin').value;
+    var co = document.getElementById('tglCheckout').value;
     if (ci && co) {
-      const d1 = new Date(ci);
-      const d2 = new Date(co);
-      const diff = Math.max(0, Math.round((d2 - d1) / (1000*60*60*24)));
+      var diff = Math.max(0, Math.round((new Date(co) - new Date(ci)) / 86400000));
       document.getElementById('jmlMalam').value = diff > 0 ? diff : '';
       return diff;
     }
@@ -462,66 +284,47 @@
     return 0;
   }
 
-  // Update summary
   function updateSummary() {
-    const harga = parseNumber(document.getElementById('hargaSewa').value);
-    const nights = calcNights();
-    const total = harga * (nights || 1);
-    const jenis = document.getElementById('jenisBayar').value;
-    const dpPct = Number(document.getElementById('besaranDp').value) || 0;
-
+    var harga = parseNumber(document.getElementById('hargaSewa').value);
+    var nights = calcNights();
+    var total = harga * (nights || 1);
+    var jenis = document.getElementById('jenisBayar').value;
+    var dpPct = Number(document.getElementById('besaranDp').value) || 0;
     document.getElementById('sumTotal').textContent = formatRp(total);
-
     if (jenis === 'full') {
       document.getElementById('sumDpRow').style.display = 'none';
       document.getElementById('sumSisaRow').style.display = 'none';
     } else {
       document.getElementById('sumDpRow').style.display = '';
       document.getElementById('sumSisaRow').style.display = '';
-      const dpAmount = Math.round(total * dpPct / 100);
-      const sisa = total - dpAmount;
+      var dpAmount = Math.round(total * dpPct / 100);
       document.getElementById('sumDpLabel').textContent = 'DP (' + dpPct + '%)';
       document.getElementById('sumDp').textContent = formatRp(dpAmount);
-      document.getElementById('sumSisa').textContent = formatRp(sisa);
+      document.getElementById('sumSisa').textContent = formatRp(total - dpAmount);
     }
   }
 
-  // Toggle DP section
   document.getElementById('jenisBayar').addEventListener('change', function() {
-    const dpSec = document.getElementById('dpSection');
-    if (this.value === 'dp') {
-      dpSec.classList.add('active');
-    } else {
-      dpSec.classList.remove('active');
-    }
+    document.getElementById('dpSection').classList.toggle('active', this.value === 'dp');
     updateSummary();
   });
-
-  // Initialize DP section visible
-  document.getElementById('dpSection').classList.add('active');
-
-  // Harga sewa formatting
   document.getElementById('hargaSewa').addEventListener('input', function() {
     formatNumberInput(this);
     updateSummary();
   });
-
-  // Date changes
   document.getElementById('tglCheckin').addEventListener('change', updateSummary);
   document.getElementById('tglCheckout').addEventListener('change', updateSummary);
   document.getElementById('besaranDp').addEventListener('input', updateSummary);
 
-  // Toast
   function showToast(msg) {
-    const t = document.getElementById('toast');
+    var t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    setTimeout(function(){ t.classList.remove('show'); }, 2500);
   }
 
-  // Validate
   function validate() {
-    const fields = [
+    var fields = [
       { id: 'namaCustomer', label: 'Nama Customer' },
       { id: 'lokasiCustomer', label: 'Lokasi Customer' },
       { id: 'hargaSewa', label: 'Harga Sewa' },
@@ -529,133 +332,128 @@
       { id: 'tglCheckout', label: 'Tanggal Check Out' },
       { id: 'tglBayar', label: 'Tanggal Pembayaran' },
     ];
-    for (const f of fields) {
-      if (!document.getElementById(f.id).value.trim()) {
-        showToast('Mohon isi ' + f.label);
-        document.getElementById(f.id).focus();
+    for (var i = 0; i < fields.length; i++) {
+      if (!document.getElementById(fields[i].id).value.trim()) {
+        showToast('Mohon isi ' + fields[i].label);
+        document.getElementById(fields[i].id).focus();
         return false;
       }
     }
-    const ci = new Date(document.getElementById('tglCheckin').value);
-    const co = new Date(document.getElementById('tglCheckout').value);
-    if (co <= ci) {
+    if (new Date(document.getElementById('tglCheckout').value) <= new Date(document.getElementById('tglCheckin').value)) {
       showToast('Tanggal Check Out harus setelah Check In');
       return false;
     }
     return true;
   }
 
-  // Generate PDF
+  function buildInvoiceHTML(d) {
+    var dpRow = '';
+    var summaryHTML = '';
+    if (d.jenis === 'dp') {
+      dpRow = '<tr><td colspan="3" style="padding:18px 14px;border-bottom:none;">Pembayaran DP ' + d.dpPct + '%</td>' +
+              '<td style="padding:18px 14px;text-align:right;border-bottom:none;">' + formatRp(d.dpAmount) + '</td></tr>';
+      summaryHTML =
+        '<div style="display:flex;justify-content:space-between;padding:5px 10px;"><span><b>Total</b></span><span>' + formatRp(d.total) + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:5px 10px;"><span><b>DP</b></span><span>' + formatRp(d.dpAmount) + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:8px 10px;margin-top:2px;background:#d4ecf7;font-weight:700;font-style:italic;"><span>Sisa Pembayaran</span><span>' + formatRp(d.sisa) + '</span></div>';
+    } else {
+      summaryHTML =
+        '<div style="display:flex;justify-content:space-between;padding:8px 10px;background:#d4ecf7;font-weight:700;font-style:italic;"><span>Total Pembayaran</span><span>' + formatRp(d.total) + '</span></div>';
+    }
+
+    return '<div style="width:794px;height:1123px;position:relative;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;color:#333;background:white;">' +
+      '<div style="background:#f75d5d;text-align:center;padding:28px 20px 18px;">' +
+        '<div style="font-family:Georgia,serif;font-size:38px;color:white;font-weight:700;font-style:italic;letter-spacing:2px;">Blissful Villa 🏠</div>' +
+      '</div>' +
+      '<div style="background:#fcd4d4;text-align:center;padding:12px 20px;letter-spacing:14px;font-size:18px;font-weight:700;color:#333;">I N V O I C E</div>' +
+      '<div style="display:flex;justify-content:space-between;padding:24px 40px 18px;font-size:14px;line-height:1.7;">' +
+        '<div>Kepada Yth:<br>' + d.nama + '<br>di ' + d.lokasi + '</div>' +
+        '<div style="text-align:right;">Telah terima pembayaran ☐<br>' + d.jenisLabel + ' pada<br>' + d.tglBayarF + '</div>' +
+      '</div>' +
+      '<table style="width:714px;margin:10px 40px;border-collapse:collapse;font-size:13.5px;">' +
+        '<thead><tr>' +
+          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:left;border-bottom:1.5px solid #ccc;width:40%;">Keterangan</th>' +
+          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:20%;">Harga</th>' +
+          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:15%;">Jml hari</th>' +
+          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:right;border-bottom:1.5px solid #ccc;width:25%;">Total</th>' +
+        '</tr></thead>' +
+        '<tbody>' +
+        '<tr>' +
+          '<td style="padding:12px 14px;border-bottom:1px solid #eee;">Sewa Tgl ' + d.tglCiShort + '</td>' +
+          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + formatRp(d.harga) + '</td>' +
+          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + d.nights + '</td>' +
+          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:right;">' + formatRp(d.total) + '</td>' +
+        '</tr>' + dpRow +
+        '</tbody></table>' +
+      '<div style="padding:10px 0;font-size:13.5px;font-style:italic;border-top:1px solid #999;margin:6px 40px 0;"><i>Check in <b>' + d.tglCiFull + '</b> - Check out <b>' + d.tglCoFull + '</b></i></div>' +
+      '<div style="width:280px;margin:30px 40px 0 auto;font-size:14px;">' + summaryHTML + '</div>' +
+      '<div style="background:#f75d5d;color:white;text-align:center;padding:24px 40px;font-size:18px;font-weight:700;font-style:italic;position:absolute;bottom:0;left:0;right:0;line-height:1.6;">Terima kasih dan selamat berlibur bersama<br>keluarga tercinta di Kota Wisata Batu</div>' +
+    '</div>';
+  }
+
   function generatePDF() {
     if (!validate()) return;
-
-    const btn = document.getElementById('btnGenerate');
+    var btn = document.getElementById('btnGenerate');
     btn.disabled = true;
     btn.innerHTML = '⏳ Membuat PDF...';
 
-    const nama = document.getElementById('namaCustomer').value.trim();
-    const lokasi = document.getElementById('lokasiCustomer').value.trim();
-    const harga = parseNumber(document.getElementById('hargaSewa').value);
-    const tglCheckin = document.getElementById('tglCheckin').value;
-    const tglCheckout = document.getElementById('tglCheckout').value;
-    const tglBayar = document.getElementById('tglBayar').value;
-    const jenis = document.getElementById('jenisBayar').value;
-    const dpPct = Number(document.getElementById('besaranDp').value) || 0;
-    const nights = calcNights();
-    const total = harga * nights;
-    const dpAmount = jenis === 'dp' ? Math.round(total * dpPct / 100) : total;
-    const sisa = total - dpAmount;
+    var nama = document.getElementById('namaCustomer').value.trim();
+    var lokasi = document.getElementById('lokasiCustomer').value.trim();
+    var harga = parseNumber(document.getElementById('hargaSewa').value);
+    var tglCheckin = document.getElementById('tglCheckin').value;
+    var tglCheckout = document.getElementById('tglCheckout').value;
+    var tglBayar = document.getElementById('tglBayar').value;
+    var jenis = document.getElementById('jenisBayar').value;
+    var dpPct = Number(document.getElementById('besaranDp').value) || 0;
+    var nights = calcNights();
+    var total = harga * nights;
+    var dpAmount = jenis === 'dp' ? Math.round(total * dpPct / 100) : total;
+    var sisa = total - dpAmount;
 
-    // Populate invoice
-    document.getElementById('invNama').textContent = nama;
-    document.getElementById('invLokasi').textContent = lokasi;
-    document.getElementById('invTglBayar').textContent = formatTglIndo(tglBayar);
+    var invoiceHTML = buildInvoiceHTML({
+      nama: nama, lokasi: lokasi, harga: harga, nights: nights, total: total,
+      jenis: jenis, dpPct: dpPct, dpAmount: dpAmount, sisa: sisa,
+      jenisLabel: jenis === 'dp' ? 'DP Booking Villa' : 'Full Payment Booking Villa',
+      tglBayarF: formatTglIndo(tglBayar),
+      tglCiShort: formatTglShort(tglCheckin),
+      tglCiFull: formatTglIndo(tglCheckin),
+      tglCoFull: formatTglIndo(tglCheckout)
+    });
 
-    if (jenis === 'dp') {
-      document.getElementById('invJenisBayarLabel').textContent = 'DP Booking Villa';
-    } else {
-      document.getElementById('invJenisBayarLabel').textContent = 'Full Payment Booking Villa';
-    }
+    var container = document.createElement('div');
+    container.style.cssText = 'position:fixed;left:0;top:0;width:794px;height:1123px;z-index:-9999;opacity:0;overflow:hidden;pointer-events:none;';
+    container.innerHTML = invoiceHTML;
+    document.body.appendChild(container);
 
-    // Table body
-    let tbody = '';
-    tbody += '<tr>';
-    tbody += '<td>Sewa Tgl ' + formatTglShort(tglCheckin) + '</td>';
-    tbody += '<td>' + formatRp(harga) + '</td>';
-    tbody += '<td>' + nights + '</td>';
-    tbody += '<td>' + formatRp(total) + '</td>';
-    tbody += '</tr>';
+    var el = container.firstChild;
+    var fileName = 'Invoice_' + nama.replace(/\s+/g, '_') + '_' + tglCheckin + '.pdf';
 
-    if (jenis === 'dp') {
-      tbody += '<tr class="inv-dp-row">';
-      tbody += '<td colspan="3">Pembayaran DP ' + dpPct + '%</td>';
-      tbody += '<td>' + formatRp(dpAmount) + '</td>';
-      tbody += '</tr>';
-    }
-
-    document.getElementById('invTableBody').innerHTML = tbody;
-
-    // Checkin/out line
-    document.getElementById('invCheckin').innerHTML =
-      '<i>Check in <b>' + formatTglIndo(tglCheckin) + '</b> - Check out <b>' + formatTglIndo(tglCheckout) + '</b></i>';
-
-    // Summary
-    let summary = '';
-    if (jenis === 'dp') {
-      summary += '<div class="inv-summary-row"><span><b>Total</b></span><span>' + formatRp(total) + '</span></div>';
-      summary += '<div class="inv-summary-row"><span><b>DP</b></span><span>' + formatRp(dpAmount) + '</span></div>';
-      summary += '<div class="inv-summary-row sisa"><span>Sisa Pembayaran</span><span>' + formatRp(sisa) + '</span></div>';
-    } else {
-      summary += '<div class="inv-summary-row sisa"><span>Total Pembayaran</span><span>' + formatRp(total) + '</span></div>';
-    }
-    document.getElementById('invSummary').innerHTML = summary;
-
-    // Make visible temporarily
-    const wrap = document.getElementById('invoiceWrap');
-    wrap.style.left = '0';
-    wrap.style.position = 'fixed';
-    wrap.style.top = '0';
-    wrap.style.zIndex = '-1';
-    wrap.style.opacity = '0';
-
-    const element = document.getElementById('invoiceTemplate');
-    const fileName = 'Invoice_' + nama.replace(/\s+/g, '_') + '_' + tglCheckin + '.pdf';
-
-    const opt = {
+    html2pdf().set({
       margin: 0,
       filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, windowWidth: 794 },
+      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123 },
       jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
-    };
-
-    html2pdf().set(opt).from(element).save().then(() => {
-      wrap.style.left = '-9999px';
-      wrap.style.position = 'absolute';
-      wrap.style.opacity = '';
-      wrap.style.zIndex = '';
+    }).from(el).save().then(function() {
+      document.body.removeChild(container);
       btn.disabled = false;
       btn.innerHTML = '📄 Download Invoice PDF';
       showToast('✅ Invoice berhasil di-download!');
-    }).catch(() => {
-      wrap.style.left = '-9999px';
-      wrap.style.position = 'absolute';
-      wrap.style.opacity = '';
-      wrap.style.zIndex = '';
+    }).catch(function() {
+      if (container.parentNode) document.body.removeChild(container);
       btn.disabled = false;
       btn.innerHTML = '📄 Download Invoice PDF';
       showToast('❌ Gagal membuat PDF');
     });
   }
 
-  // Reset
   function resetForm() {
     document.getElementById('namaCustomer').value = '';
     document.getElementById('lokasiCustomer').value = '';
-    document.getElementById('hargaSewa').value = '';
+    document.getElementById('hargaSewa').value = '1.100.000';
     document.getElementById('tglCheckin').value = '';
     document.getElementById('tglCheckout').value = '';
-    document.getElementById('tglBayar').value = '';
+    document.getElementById('tglBayar').value = todayStr();
     document.getElementById('jenisBayar').value = 'dp';
     document.getElementById('besaranDp').value = '30';
     document.getElementById('jmlMalam').value = '';
@@ -664,13 +462,14 @@
     showToast('Form berhasil direset');
   }
 
-  // Service Worker Registration
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
-
-  // Initial summary
+  // Set defaults on load
+  document.getElementById('hargaSewa').value = '1.100.000';
+  document.getElementById('tglBayar').value = todayStr();
   updateSummary();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
 </script>
 </body>
 </html>
