@@ -233,7 +233,7 @@
       🔄 Reset Form
     </button>
   </div>
-  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.2.0 · Updated 26 Mar 2026</div>
+  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.2.2 · Updated 26 Mar 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -312,7 +312,16 @@
     formatNumberInput(this);
     updateSummary();
   });
-  document.getElementById('tglCheckin').addEventListener('change', updateSummary);
+  document.getElementById('tglCheckin').addEventListener('change', function() {
+    var ci = this.value;
+    if (ci) {
+      var d = new Date(ci);
+      d.setDate(d.getDate() + 1);
+      var co = d.toISOString().slice(0, 10);
+      document.getElementById('tglCheckout').value = co;
+    }
+    updateSummary();
+  });
   document.getElementById('tglCheckout').addEventListener('change', updateSummary);
   document.getElementById('besaranDp').addEventListener('input', function() {
     formatNumberInput(this);
@@ -453,7 +462,7 @@
           width: 794,
           height: 1123,
           windowWidth: 794,
-          scrollX: 330,
+          scrollX: 332,
           scrollY: 0
         },
         jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
