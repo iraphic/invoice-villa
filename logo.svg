@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320">
+  <rect width="400" height="320" rx="0" fill="#555"/>
+  <!-- Sun rays -->
+  <g transform="translate(200,145)" stroke="#f75d5d" stroke-width="6" stroke-linecap="round" fill="none">
+    <line x1="0" y1="-65" x2="0" y2="-85"/>
+    <line x1="30" y1="-58" x2="40" y2="-76" />
+    <line x1="55" y1="-38" x2="72" y2="-50"/>
+    <line x1="-30" y1="-58" x2="-40" y2="-76"/>
+    <line x1="-55" y1="-38" x2="-72" y2="-50"/>
+    <line x1="68" y1="-10" x2="85" y2="-14"/>
+    <line x1="-68" y1="-10" x2="-85" y2="-14"/>
+  </g>
+  <!-- Mountain/sunrise shape -->
+  <path d="M110,170 Q150,90 200,85 Q250,90 290,170 Z" fill="#f75d5d"/>
+  <!-- Mountain notches -->
+  <path d="M155,155 L170,140 L185,155 L200,138 L215,155 L230,140 L245,155" fill="none" stroke="#555" stroke-width="0"/>
+  <path d="M148,170 L165,148 L180,162 L200,142 L220,162 L235,148 L252,170 Z" fill="#555"/>
+  <!-- Text BLISSFUL -->
+  <text x="200" y="225" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="48" fill="white" letter-spacing="3">BLISSFUL</text>
+  <!-- Text villa -->
+  <text x="200" y="275" text-anchor="middle" font-family="Georgia, serif" font-weight="400" font-size="40" fill="white" font-style="italic">villa</text>
+</svg>
