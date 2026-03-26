@@ -233,7 +233,7 @@
       🔄 Reset Form
     </button>
   </div>
-  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.1.5 · Updated 26 Mar 2026</div>
+  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.1.6 · Updated 26 Mar 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -373,7 +373,7 @@
     return '<div style="width:794px;height:1123px;font-family:Segoe UI,Arial,sans-serif;color:#333;background:white;display:flex;flex-direction:column;">' +
       '<div style="background:#f75d5d;text-align:center;padding:18px 20px 14px;display:flex;align-items:center;justify-content:center;gap:16px;">' +
         logoSvg +
-        '<div style="font-family:Georgia,serif;font-size:36px;color:white;font-weight:700;font-style:italic;letter-spacing:2px;">Blissful Villa</div>' +
+        '<div style="font-family:Georgia,serif;font-size:36px;color:white;font-weight:700;font-style:italic;letter-spacing:2px;">Blissful Villa 🏠</div>' +
       '</div>' +
       '<div style="background:#fcd4d4;text-align:center;padding:10px 20px;letter-spacing:14px;font-size:16px;font-weight:700;color:#333;">I N V O I C E</div>' +
       '<div style="flex:1;">' +
@@ -434,48 +434,41 @@
 
     var wrapper = document.createElement('div');
     wrapper.id = 'pdfInvoiceWrapper';
-    wrapper.style.cssText = 'width:794px;height:1123px;overflow:hidden;position:absolute;left:-9999px;top:0;';
+    wrapper.style.cssText = 'width:794px;height:1123px;overflow:hidden;position:fixed;left:0;top:0;z-index:-1;opacity:0.001;';
     wrapper.innerHTML = invoiceHTML;
     document.body.appendChild(wrapper);
 
     var el = wrapper.firstChild;
     var fileName = 'Invoice_' + nama.replace(/\s+/g, '_') + '_' + tglCheckin + '.pdf';
 
-    html2pdf().set({
-      margin: 0,
-      filename: fileName,
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        width: 794,
-        height: 1123,
-        windowWidth: 794,
-        scrollX: -100,
-        scrollY: 0,
-        x: 0,
-        y: 0,
-        onclone: function(clonedDoc) {
-          var clonedEl = clonedDoc.getElementById('pdfInvoiceWrapper');
-          if (clonedEl) {
-            clonedEl.style.position = 'absolute';
-            clonedEl.style.left = '0';
-            clonedEl.style.top = '0';
-          }
-        }
-      },
-      jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
-    }).from(el).save().then(function() {
-      document.body.removeChild(wrapper);
-      btn.disabled = false;
-      btn.innerHTML = '📄 Download Invoice PDF';
-      showToast('✅ Invoice berhasil di-download!');
-    }).catch(function() {
-      if (wrapper.parentNode) document.body.removeChild(wrapper);
-      btn.disabled = false;
-      btn.innerHTML = '📄 Download Invoice PDF';
-      showToast('❌ Gagal membuat PDF');
-    });
+    // Tunggu render selesai sebelum capture
+    setTimeout(function() {
+      html2pdf().set({
+        margin: 0,
+        filename: fileName,
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          width: 794,
+          height: 1123,
+          windowWidth: 794,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
+      }).from(el).save().then(function() {
+        document.body.removeChild(wrapper);
+        btn.disabled = false;
+        btn.innerHTML = '📄 Download Invoice PDF';
+        showToast('✅ Invoice berhasil di-download!');
+      }).catch(function() {
+        if (wrapper.parentNode) document.body.removeChild(wrapper);
+        btn.disabled = false;
+        btn.innerHTML = '📄 Download Invoice PDF';
+        showToast('❌ Gagal membuat PDF');
+      });
+    }, 100);
   }
 
   function resetForm() {
