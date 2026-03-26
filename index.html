@@ -361,33 +361,35 @@
         '<div style="display:flex;justify-content:space-between;padding:8px 10px;background:#d4ecf7;font-weight:700;font-style:italic;"><span>Total Pembayaran</span><span>' + formatRp(d.total) + '</span></div>';
     }
 
-    return '<div style="width:794px;height:1123px;position:relative;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;color:#333;background:white;">' +
+    return '<div style="width:794px;height:1123px;font-family:Segoe UI,Arial,sans-serif;color:#333;background:white;display:flex;flex-direction:column;">' +
       '<div style="background:#f75d5d;text-align:center;padding:28px 20px 18px;">' +
         '<div style="font-family:Georgia,serif;font-size:38px;color:white;font-weight:700;font-style:italic;letter-spacing:2px;">Blissful Villa 🏠</div>' +
       '</div>' +
       '<div style="background:#fcd4d4;text-align:center;padding:12px 20px;letter-spacing:14px;font-size:18px;font-weight:700;color:#333;">I N V O I C E</div>' +
-      '<div style="display:flex;justify-content:space-between;padding:24px 40px 18px;font-size:14px;line-height:1.7;">' +
-        '<div>Kepada Yth:<br>' + d.nama + '<br>di ' + d.lokasi + '</div>' +
-        '<div style="text-align:right;">Telah terima pembayaran ☐<br>' + d.jenisLabel + ' pada<br>' + d.tglBayarF + '</div>' +
+      '<div style="flex:1;">' +
+        '<div style="display:flex;justify-content:space-between;padding:24px 40px 18px;font-size:14px;line-height:1.7;">' +
+          '<div>Kepada Yth:<br>' + d.nama + '<br>di ' + d.lokasi + '</div>' +
+          '<div style="text-align:right;">Telah terima pembayaran ☐<br>' + d.jenisLabel + ' pada<br>' + d.tglBayarF + '</div>' +
+        '</div>' +
+        '<table style="width:714px;margin:10px 40px;border-collapse:collapse;font-size:13.5px;">' +
+          '<thead><tr>' +
+            '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:left;border-bottom:1.5px solid #ccc;width:40%;">Keterangan</th>' +
+            '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:20%;">Harga</th>' +
+            '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:15%;">Jml hari</th>' +
+            '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:right;border-bottom:1.5px solid #ccc;width:25%;">Total</th>' +
+          '</tr></thead>' +
+          '<tbody>' +
+          '<tr>' +
+            '<td style="padding:12px 14px;border-bottom:1px solid #eee;">Sewa Tgl ' + d.tglCiShort + '</td>' +
+            '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + formatRp(d.harga) + '</td>' +
+            '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + d.nights + '</td>' +
+            '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:right;">' + formatRp(d.total) + '</td>' +
+          '</tr>' + dpRow +
+          '</tbody></table>' +
+        '<div style="padding:10px 0;font-size:13.5px;font-style:italic;border-top:1px solid #999;margin:6px 40px 0;"><i>Check in <b>' + d.tglCiFull + '</b> - Check out <b>' + d.tglCoFull + '</b></i></div>' +
+        '<div style="width:280px;margin:30px 40px 0 auto;font-size:14px;">' + summaryHTML + '</div>' +
       '</div>' +
-      '<table style="width:714px;margin:10px 40px;border-collapse:collapse;font-size:13.5px;">' +
-        '<thead><tr>' +
-          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:left;border-bottom:1.5px solid #ccc;width:40%;">Keterangan</th>' +
-          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:20%;">Harga</th>' +
-          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:center;border-bottom:1.5px solid #ccc;width:15%;">Jml hari</th>' +
-          '<th style="background:#fcd4d4;padding:10px 14px;font-size:14px;font-weight:700;text-align:right;border-bottom:1.5px solid #ccc;width:25%;">Total</th>' +
-        '</tr></thead>' +
-        '<tbody>' +
-        '<tr>' +
-          '<td style="padding:12px 14px;border-bottom:1px solid #eee;">Sewa Tgl ' + d.tglCiShort + '</td>' +
-          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + formatRp(d.harga) + '</td>' +
-          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:center;">' + d.nights + '</td>' +
-          '<td style="padding:12px 14px;border-bottom:1px solid #eee;text-align:right;">' + formatRp(d.total) + '</td>' +
-        '</tr>' + dpRow +
-        '</tbody></table>' +
-      '<div style="padding:10px 0;font-size:13.5px;font-style:italic;border-top:1px solid #999;margin:6px 40px 0;"><i>Check in <b>' + d.tglCiFull + '</b> - Check out <b>' + d.tglCoFull + '</b></i></div>' +
-      '<div style="width:280px;margin:30px 40px 0 auto;font-size:14px;">' + summaryHTML + '</div>' +
-      '<div style="background:#f75d5d;color:white;text-align:center;padding:24px 40px;font-size:18px;font-weight:700;font-style:italic;position:absolute;bottom:0;left:0;right:0;line-height:1.6;">Terima kasih dan selamat berlibur bersama<br>keluarga tercinta di Kota Wisata Batu</div>' +
+      '<div style="background:#f75d5d;color:white;text-align:center;padding:24px 40px;font-size:18px;font-weight:700;font-style:italic;line-height:1.6;">Terima kasih dan selamat berlibur bersama<br>keluarga tercinta di Kota Wisata Batu</div>' +
     '</div>';
   }
 
@@ -421,7 +423,7 @@
     });
 
     var container = document.createElement('div');
-    container.style.cssText = 'position:fixed;left:0;top:0;width:794px;height:1123px;z-index:-9999;opacity:0;overflow:hidden;pointer-events:none;';
+    container.style.cssText = 'position:absolute;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;pointer-events:none;';
     container.innerHTML = invoiceHTML;
     document.body.appendChild(container);
 
@@ -432,7 +434,7 @@
       margin: 0,
       filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123 },
+      html2canvas: { scale: 2, useCORS: true, width: 794, height: 1123, scrollX: 0, scrollY: 0, x: 0, y: 0 },
       jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait', hotfixes: ['px_scaling'] }
     }).from(el).save().then(function() {
       document.body.removeChild(container);
