@@ -152,7 +152,7 @@
 <body>
 
 <!-- PWA Install Prompt Popup (Mobile Only) -->
-<div id="pwaInstallPrompt" style="display:none;">
+<div id="pwaInstallPrompt">
   <div class="pwa-popup-custom">
     <div class="pwa-popup-icon"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="12" fill="#f75d5d"/><g><rect x="10" y="8" width="12" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="16" cy="22.5" r="1.2" fill="#fff"/></g></svg></div>
     <div class="pwa-popup-content">
@@ -169,16 +169,19 @@
 <style>
   #pwaInstallPrompt {
     position: fixed;
-    top: 32px;
     left: 0; right: 0;
+    bottom: 32px;
     z-index: 9999;
-    display: flex;
+    display: none;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-end;
     pointer-events: none;
     background: none;
   }
-  #pwaInstallPrompt.show { display: flex; pointer-events: auto; }
+  #pwaInstallPrompt.show {
+    display: flex;
+    pointer-events: auto;
+  }
   .pwa-popup-custom {
     background: #121728;
     color: #fff;
@@ -229,11 +232,39 @@
   }
   .pwa-popup-later:active { color: #f75d5d; }
   @media (max-width: 600px) {
-    .pwa-popup-custom { min-width: 0; width: 98vw; padding: 18px 8px 18px 8px; border-radius: 0 0 24px 24px; }
+    .pwa-popup-custom {
+      min-width: 0;
+      width: 98vw;
+      max-width: 98vw;
+      padding: 14px 4vw 14px 4vw;
+      border-radius: 0 0 24px 24px;
+      box-sizing: border-box;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .pwa-popup-title, .pwa-popup-desc {
+      word-break: break-word;
+    }
+    .pwa-popup-actions {
+      flex-direction: column;
+      gap: 10px;
+      margin-left: 0;
+      align-items: stretch;
+    }
+    .pwa-popup-install, .pwa-popup-later {
+      width: 100%;
+      justify-content: center;
+    }
+    .pwa-popup-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+    }
   }
 </style>
 
-<div class="fixed bottom-24 left-4 right-4 z-[100] md:bottom-8 md:left-auto md:right-8 md:w-80 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4 border border-white/10 backdrop-blur-xl" style="opacity: 1; transform: none;">
+<!-- div class="fixed bottom-24 left-4 right-4 z-[100] md:bottom-8 md:left-auto md:right-8 md:w-80 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4 border border-white/10 backdrop-blur-xl" style="opacity: 1; transform: none;">
   <div class="flex items-center gap-3">
     <div class="bg-red-600 p-2 rounded-xl">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
@@ -245,7 +276,7 @@
             <button class="bg-white text-slate-900 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-colors flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download" aria-hidden="true">
                 <path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>Install</button>
-              </div></div>
+              </div></div-->
 
 <div class="app-header">
   <h1>🏠 Blissful Villa</h1>
@@ -330,7 +361,7 @@
       🔄 Reset Form
     </button>
   </div>
-  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.3.0 · Updated 28 Mar 2026</div>
+  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.3.1 · Updated 28 Mar 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
