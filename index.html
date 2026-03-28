@@ -153,15 +153,15 @@
 
 <!-- PWA Install Prompt Popup (Mobile Only) -->
 <div id="pwaInstallPrompt" style="display:none;">
-  <div class="pwa-popup">
-    <div class="pwa-icon"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="12" fill="#f75d5d"/><g><rect x="10" y="8" width="12" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="16" cy="22.5" r="1.2" fill="#fff"/></g></svg></div>
-    <div class="pwa-content">
-      <div class="pwa-title">INSTALL APP</div>
-      <div class="pwa-desc">Akses lebih cepat di smartphone</div>
+  <div class="pwa-popup-custom">
+    <div class="pwa-popup-icon"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="12" fill="#f75d5d"/><g><rect x="10" y="8" width="12" height="16" rx="3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="16" cy="22.5" r="1.2" fill="#fff"/></g></svg></div>
+    <div class="pwa-popup-content">
+      <div class="pwa-popup-title">INSTALL APP</div>
+      <div class="pwa-popup-desc">Akses lebih cepat di smartphone</div>
     </div>
-    <div class="pwa-actions">
-      <button class="pwa-btn-later" id="pwaBtnLater">Nanti</button>
-      <button class="pwa-btn-install" id="pwaBtnInstall"><span style="font-size:1.2em;vertical-align:middle;">⬇️</span> INSTALL</button>
+    <div class="pwa-popup-actions">
+      <button class="pwa-popup-later" id="pwaBtnLater">Nanti</button>
+      <button class="pwa-popup-install" id="pwaBtnInstall"><span style="font-size:1.2em;vertical-align:middle;">⬇️</span> INSTALL</button>
     </div>
   </div>
 </div>
@@ -169,63 +169,68 @@
 <style>
   #pwaInstallPrompt {
     position: fixed;
-    left: 0; right: 0; bottom: 0;
+    top: 32px;
+    left: 0; right: 0;
     z-index: 9999;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
     pointer-events: none;
+    background: none;
   }
   #pwaInstallPrompt.show { display: flex; pointer-events: auto; }
-  .pwa-popup {
+  .pwa-popup-custom {
     background: #121728;
     color: #fff;
     border-radius: 24px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.18);
     display: flex;
     align-items: center;
-    gap: 18px;
-    padding: 18px 28px 18px 18px;
-    margin: 16px;
-    min-width: 320px;
+    gap: 24px;
+    padding: 28px 36px 28px 24px;
+    margin: 0 0 0 0;
+    min-width: 340px;
     max-width: 95vw;
     font-family: inherit;
     animation: pwaPopIn 0.25s cubic-bezier(.4,1.6,.6,1) 1;
   }
-  @keyframes pwaPopIn { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
-  .pwa-icon { background: #f75d5d; border-radius: 16px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
-  .pwa-content { flex: 1; }
-  .pwa-title { font-size: 1.1em; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 2px; }
-  .pwa-desc { font-size: 0.98em; color: #bfc6d1; line-height: 1.3; }
-  .pwa-actions { display: flex; flex-direction: column; gap: 8px; margin-left: 18px; }
-  .pwa-btn-install {
+  @keyframes pwaPopIn { from { transform: translateY(-40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .pwa-popup-icon { background: #f75d5d; border-radius: 16px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+  .pwa-popup-content { flex: 1; min-width: 120px; }
+  .pwa-popup-title { font-size: 1.1em; font-weight: 900; letter-spacing: 0.08em; margin-bottom: 2px; text-transform: uppercase; }
+  .pwa-popup-desc { font-size: 1em; color: #bfc6d1; line-height: 1.3; font-weight: 500; }
+  .pwa-popup-actions { display: flex; flex-direction: row; gap: 18px; margin-left: 18px; align-items: center; }
+  .pwa-popup-install {
     background: #fff;
     color: #121728;
     border: none;
     border-radius: 16px;
-    font-weight: 700;
+    font-weight: 900;
     font-size: 1em;
-    padding: 10px 22px;
+    padding: 12px 28px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     transition: background 0.15s;
-    display: flex; align-items: center; gap: 6px;
+    display: flex; align-items: center; gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
-  .pwa-btn-install:active { background: #fcd4d4; }
-  .pwa-btn-later {
+  .pwa-popup-install:active { background: #fcd4d4; }
+  .pwa-popup-later {
     background: none;
     color: #bfc6d1;
     border: none;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1em;
     cursor: pointer;
-    padding: 0;
+    padding: 0 8px 0 0;
     margin-bottom: 2px;
     transition: color 0.15s;
   }
-  .pwa-btn-later:active { color: #f75d5d; }
-  @media (min-width: 600px) { .pwa-popup { min-width: 340px; } }
-  @media (max-width: 480px) { .pwa-popup { min-width: 0; width: 100vw; margin: 0 0 8px 0; border-radius: 0 0 24px 24px; } }
+  .pwa-popup-later:active { color: #f75d5d; }
+  @media (max-width: 600px) {
+    .pwa-popup-custom { min-width: 0; width: 98vw; padding: 18px 8px 18px 8px; border-radius: 0 0 24px 24px; }
+  }
 </style>
 
 <div class="fixed bottom-24 left-4 right-4 z-[100] md:bottom-8 md:left-auto md:right-8 md:w-80 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4 border border-white/10 backdrop-blur-xl" style="opacity: 1; transform: none;">
@@ -325,7 +330,7 @@
       🔄 Reset Form
     </button>
   </div>
-  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.2.9 · Updated 28 Mar 2026</div>
+  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.3.0 · Updated 28 Mar 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
