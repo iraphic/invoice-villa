@@ -311,7 +311,7 @@
       🔄 Reset Form
     </button>
   </div>
-  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.2.7 · Updated 28 Mar 2026</div>
+  <div style="text-align:center;padding:16px 0 24px;font-size:0.72rem;color:#aaa;">v1.2.8 · Updated 28 Mar 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -588,22 +588,29 @@
   const pwaBtnInstall = document.getElementById('pwaBtnInstall');
   const pwaBtnLater = document.getElementById('pwaBtnLater');
 
-  // Only show on mobile
+
+  // DEBUG: Sementara pop-up install PWA juga muncul di desktop untuk testing
+  // Ubah ke true jika ingin hanya mobile: const onlyMobile = true;
+  const onlyMobile = false;
   function isMobile() {
     return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
   }
 
   window.addEventListener('beforeinstallprompt', function(e) {
-    if (!isMobile()) return; // Only mobile
+    console.log('beforeinstallprompt fired');
+    if (onlyMobile && !isMobile()) return; // Only mobile jika diaktifkan
     e.preventDefault();
     deferredPrompt = e;
     pwaPrompt.classList.add('show');
+    console.log('PWA custom prompt shown');
   });
 
   pwaBtnInstall.addEventListener('click', function() {
     if (deferredPrompt) {
+      console.log('Install button clicked, calling prompt()');
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(function(choiceResult) {
+        console.log('User choice:', choiceResult);
         if (choiceResult.outcome === 'accepted') {
           pwaPrompt.classList.remove('show');
         }
